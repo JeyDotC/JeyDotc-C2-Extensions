@@ -92,6 +92,7 @@ AddExpression(3, ef_return_number, "Get shots interval", "", "getInterval", "The
 AddExpression(4, ef_return_number, "Get reload time", "", "getReloadTime", "When clip is empty, weapon must be reloaded during some time.");
 AddExpression(5, ef_return_number, "Get ready status", "", "getReady", "After each shoot weapon can not make next shooting some time.");
 AddExpression(6, ef_return_number, "Get disabled status", "", "getDisabled", "In reload time and other cases, weapon can be disabled.");
+AddExpression(7, ef_return_number, "Get last shoot bullet", "", "getLastShootBullet", "Gets the last shoot bullet UID, this only works on shoot.");
 
 ACESDone();
 

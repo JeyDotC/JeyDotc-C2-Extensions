@@ -71,6 +71,7 @@ cr.behaviors.jj_Weapon = function(runtime)
         this.was_shoot = false;
         this.was_reload_start = false;
         this.was_reload_finish = false;
+		this.last_shoot_bullet = 0;
 		
         // last times
         this.last_shoot_time = 0;
@@ -303,7 +304,6 @@ cr.behaviors.jj_Weapon = function(runtime)
             assert2(this.bullet_instance, "You don't set a Bullet instance to Weapon. Use \"Weapon -> set bullet instance\" action! ");
 
             var inst = this.runtime.spawnInstance(this.bullet_instance, this.inst.layer.index, image_point, this.inst.angle);
-			this.runtime.trigger(Object.getPrototypeOf(inst.type.plugin).cnds.OnCreated, inst);
 
             this.ready = false;
             this.last_shoot_time = Date.now();
@@ -312,7 +312,10 @@ cr.behaviors.jj_Weapon = function(runtime)
             }
 
             this.was_shoot = true;
+			this.last_shoot_bullet = inst.uid;
+			
             this.runtime.trigger(this.behavior.cnds.wasShoot, this.inst);
+			this.runtime.trigger(Object.getPrototypeOf(inst.type.plugin).cnds.OnCreated, inst);
         }
 	};
 
@@ -497,5 +500,10 @@ cr.behaviors.jj_Weapon = function(runtime)
 	exps.getDisabled = function (ret)
 	{
 		ret.set_int(!this.enabled);
+	};
+
+	exps.getLastShootBullet = function(ret)
+	{
+		ret.set_int(this.last_shoot_bullet);
 	};
 }());
