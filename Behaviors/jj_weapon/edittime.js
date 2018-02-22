@@ -33,14 +33,22 @@
 //////////////////////////////////////////////////////////////
 // Conditions
 AddCondition(0, 0, "Is ready", "", "{my} is ready to shoot", "True when the object is make pause and ready to shoot now.", "isReady");
+
 AddCmpParam("Comparison", "Choose bullets count to compare.");
 AddNumberParam("Bullets count", "The bullets in clip.");
 AddCondition(1, 0, "Bullets in clip", "", "{my} clip buttons count {0} {1}", "True when the object clip have some bullets.", "bulletsInClip");
+
 AddCondition(2, cf_trigger, "Reload start", "", "{my} start reloading", "True when weapon is reload start.", "isReloadStart");
+
 AddCondition(3, cf_trigger, "Reload finish", "", "{my} finish reloading", "True when weapon is reload finish.", "isReloadFinish");
+
 AddCondition(4, cf_trigger, "Shoot", "", "{my} shoot", "True when the object is make shoot.", "wasShoot");
+
 AddCondition(5, 0, "Disabled", "", "{my} disable", "True when weapon is disabled.", "isDisabled");
+
 AddCondition(6, 0, "Enabled", "", "{my} enable", "True when weapon is enabled.", "isEnabled");
+
+AddCondition(7, cf_trigger, "Reload cancel", "", "{my} cancel reload", "True when weapon reload was canceled.", "isReloadCanceled");
 
 //////////////////////////////////////////////////////////////
 // Actions
@@ -65,7 +73,7 @@ AddNumberParam("Interval", "Set interval between shots for current weapon (milli
 AddAction(5, 0, "Set interval", "", "Set {my} shots interval to <i>{0}</i> milliseconds", "Set interval between shoots for current weapon (ms).", "setInterval");
 
 AddNumberParam("ReloadTime", "Set interval for reload current weapon (milliseconds).", "1000");
-AddAction(6, 0, "Set reload time", "", "Set {my} shoots interval to <i>{0}</i> milliseconds", "Set interval between shoots for current weapon (ms).", "setReloadTime");
+AddAction(6, 0, "Set reload time", "", "Set {my} reload interval to <i>{0}</i> milliseconds", "Set interval between shoots for current weapon (ms).", "setReloadTime");
 
 AddAction(7, 0, "Set ready to shoot", "", "Set {my} ready for a shoot.", "Set the weapon to ready for a shoot.", "makeReady");
 
@@ -83,6 +91,13 @@ AddAction(11, 0, "Set reload key", "", "Reload key for {my} is {0} now.", "Set t
 AddObjectParam("Bullet", "Choose the bullet object for weapon");
 AddAction(12, 0, "Set bullet instance", "", "Bullet of {my} now is {0}.", "Set the weapon bullet type.", "setBullet");
 
+AddAction(13, 0, "Reload", "", "{my} reload now.", "Start reload.", "simulateReload");
+
+AddAction(14, 0, "Cancel reload", "", "{my} cancel reload.", "Cancel the current reload.", "cancelReload");
+
+AddStringParam("Instance type name", "Name of the bullet instance type.")
+AddAction(15, 0, "Set bullet instance by name", "", "Bullet of {my} now is {0}.", "Set the weapon bullet type by name.", "setBulletByName");
+
 //////////////////////////////////////////////////////////////
 // Expressions
 AddExpression(0, ef_return_number, "Get bullets count in the clip", "", "getClipBulletsCount", "The count bullets in the clip now.");
@@ -93,6 +108,8 @@ AddExpression(4, ef_return_number, "Get reload time", "", "getReloadTime", "When
 AddExpression(5, ef_return_number, "Get ready status", "", "getReady", "After each shoot weapon can not make next shooting some time.");
 AddExpression(6, ef_return_number, "Get disabled status", "", "getDisabled", "In reload time and other cases, weapon can be disabled.");
 AddExpression(7, ef_return_number, "Get last shoot bullet", "", "getLastShootBullet", "Gets the last shoot bullet UID, this only works on shoot.");
+AddExpression(8, ef_return_number, "Get is reloading", "", "getIsReloading", "Gets if the weapon is reloading.");
+AddExpression(9, ef_return_number, "Get last shoot time", "", "getLastShootTime", "Gets the last time the weapon was shot.");
 
 ACESDone();
 

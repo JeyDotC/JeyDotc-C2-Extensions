@@ -6,47 +6,42 @@ assert2(cr.behaviors, "cr.behaviors not created");
 
 /////////////////////////////////////
 // Behavior class
-cr.behaviors.jj_Weapon = function(runtime)
-{
+cr.behaviors.jj_Weapon = function (runtime) {
     this.runtime = runtime;
 };
 
-(function ()
-{
+(function () {
     var behaviorProto = cr.behaviors.jj_Weapon.prototype;
-        
+
     /////////////////////////////////////
     // Behavior type class
-    behaviorProto.Type = function(behavior, objtype)
-    {
+    behaviorProto.Type = function (behavior, objtype) {
         this.behavior = behavior;
         this.objtype = objtype;
         this.runtime = behavior.runtime;
     };
-    
+
     var behtypeProto = behaviorProto.Type.prototype;
 
-    behtypeProto.onCreate = function()
-    {
+    behtypeProto.onCreate = function () {
     };
 
     /////////////////////////////////////
     // Behavior instance class
-    behaviorProto.Instance = function(type, inst)
-    {
+    behaviorProto.Instance = function (type, inst) {
         this.type = type;
         this.behavior = type.behavior;
         this.inst = inst;               // associated object instance to modify
         this.runtime = type.runtime;
-        
+
         // Key states
         this.shootkey = false;
         this.reloadkey = false;
-        
+
         // Simulated key states
         this.simshoot = false;
         this.simreload = false;
-        
+
         // Bullets
         this.bullets_count = 0;
         this.max_bullets_count = 0;
@@ -54,8 +49,9 @@ cr.behaviors.jj_Weapon = function(runtime)
         this.clip_size = 0;
         this.enabled = true;
         this.reload = false;
+        this.reloadCancel = false;
         this.ready = true;
-        
+
         // Time durations
         this.interval = 0;
         this.reload_time = 0;
@@ -72,7 +68,7 @@ cr.behaviors.jj_Weapon = function(runtime)
         this.was_reload_start = false;
         this.was_reload_finish = false;
         this.last_shoot_bullet = 0;
-        
+
         // last times
         this.last_shoot_time = 0;
         this.start_reload_time = 0;
@@ -87,11 +83,10 @@ cr.behaviors.jj_Weapon = function(runtime)
             return inst;
         }
     };
-    
+
     var behinstProto = behaviorProto.Instance.prototype;
 
-    behinstProto.onCreate = function()
-    {
+    behinstProto.onCreate = function () {
         // Load properties
         this.clip_size = this.properties[0];
         this.clip_bullets_count = this.properties[1];
@@ -109,70 +104,68 @@ cr.behaviors.jj_Weapon = function(runtime)
         // Only bind keyboard events via jQuery if default controls are in use
         jQuery(document).keydown(
             (function (self) {
-                return function(info) {
+                return function (info) {
                     self.onKeyDown(info);
                 };
             })(this)
         );
-        
+
         jQuery(document).keyup(
             (function (self) {
-                return function(info) {
+                return function (info) {
                     self.onKeyUp(info);
                 };
             })(this)
         );
     };
 
-    behinstProto.saveToJSON = function ()
-    {
+    behinstProto.saveToJSON = function () {
         var o = {
-        // Key states
-        "shk": this.shootkey,
-        "rlk": this.reloadkey,
-        
-        // Simulated key states
-        "ssh": this.simshoot,
-        "srl": this.simreload,
-        
-        // Bullets
-        "bc": this.bullets_count,
-        "mbc": this.max_bullets_count,
-        "cbc": this.clip_bullets_count,
-        "cs": this.clip_size,
-        "e": this.enabled,
-        "rl": this.reload,
-        "rd": this.ready,
-        
-        // Time durations
-        "in": this.interval,
-        "rt": this.reload_time,
+            // Key states
+            "shk": this.shootkey,
+            "rlk": this.reloadkey,
 
-        // Weapon features
-        "arl": this.auto_reload,
-        "uc": this.user_control,
-        "skc": this.shoot_keycode,
-        "rlkc": this.reload_keycode
+            // Simulated key states
+            "ssh": this.simshoot,
+            "srl": this.simreload,
+
+            // Bullets
+            "bc": this.bullets_count,
+            "mbc": this.max_bullets_count,
+            "cbc": this.clip_bullets_count,
+            "cs": this.clip_size,
+            "e": this.enabled,
+            "rl": this.reload,
+            "rlc": this.reloadCancel,
+            "rd": this.ready,
+
+            // Time durations
+            "in": this.interval,
+            "rt": this.reload_time,
+
+            // Weapon features
+            "arl": this.auto_reload,
+            "uc": this.user_control,
+            "skc": this.shoot_keycode,
+            "rlkc": this.reload_keycode
         };
 
-        if(this.bullet_instance)
-        {
+        if (this.bullet_instance) {
             o["bins"] = this.bullet_instance.sid;
         }
 
         return o;
     };
 
-    behinstProto.loadFromJSON = function (o)
-    {
+    behinstProto.loadFromJSON = function (o) {
         // Key states
         this.shootkey = o["shk"];
         this.reloadkey = o["rlk"];
-        
+
         // Simulated key states
         this.simshoot = o["ssh"];
         this.simreload = o["srl"];
-        
+
         // Bullets
         this.bullets_count = o["bc"];
         this.max_bullets_count = o["mbc"];
@@ -180,8 +173,9 @@ cr.behaviors.jj_Weapon = function(runtime)
         this.clip_size = o["cs"];
         this.enabled = o["e"];
         this.reload = o["rl"];
+        this.reloadCancel = o["rlc"];
         this.ready = o["rd"];
-        
+
         // Time durations
         this.interval = o["in"];
         this.reload_time = o["rt"];
@@ -192,13 +186,12 @@ cr.behaviors.jj_Weapon = function(runtime)
         this.shoot_keycode = o["skc"];
         this.reload_keycode = o["rlkc"];
 
-        if(o.hasOwnProperty("bins"))
-        {
+        if (o.hasOwnProperty("bins")) {
             this.bullet_instance = this.runtime.getObjectTypeBySid(o["bins"]);
-        }       
+        }
     };
 
-    behinstProto.onKeyDown = function (info) {  
+    behinstProto.onKeyDown = function (info) {
         switch (info.which) {
             case this.shoot_keycode:    // shoot
                 info.preventDefault();
@@ -211,8 +204,7 @@ cr.behaviors.jj_Weapon = function(runtime)
         }
     };
 
-    behinstProto.onKeyUp = function (info)
-    {
+    behinstProto.onKeyUp = function (info) {
         switch (info.which) {
             case this.shoot_keycode:    // shoot
                 info.preventDefault();
@@ -225,15 +217,15 @@ cr.behaviors.jj_Weapon = function(runtime)
         }
     };
 
-    behinstProto.tick = function ()
-    {
+    behinstProto.tick = function () {
         var dt = this.runtime.getDt(this.inst);
-        
+
         var shoot = this.shootkey && this.user_control != 'None' || this.simshoot;
         var reload = this.reloadkey && this.user_control != 'None' || this.simreload;
         this.simshoot = false;
         this.simreload = false;
         this.reloadkey = false;
+
         if (this.user_control == 'Single') {
             this.shootkey = false;
         }
@@ -244,6 +236,11 @@ cr.behaviors.jj_Weapon = function(runtime)
             this.reload = true;
             this.was_reload_start = true;
             this.runtime.trigger(this.behavior.cnds.isReloadStart, this.inst);
+        }
+
+        if (this.reloadCancel) {
+            this.reload = false;
+            this.runtime.trigger(this.behavior.cnds.isReloadCanceled, this.inst);
         }
 
         if (this.reload && Date.now() - this.start_reload_time >= this.reload_time && this.clip_size != 0 && this.clip_bullets_count != -1 && this.bullets_count != 0) {
@@ -258,7 +255,7 @@ cr.behaviors.jj_Weapon = function(runtime)
                     count = Math.min(count, this.bullets_count);   // take not more than we have
                 }
             }
-//            this.behavior.acts.addClipBullets.call(this, count);
+            //            this.behavior.acts.addClipBullets.call(this, count);
             if (count == -1) { // we can put in clip infinity count of bullets
                 this.clip_bullets_count = -1;
             } else { // else we take from one and give to a clip our bullets
@@ -268,11 +265,11 @@ cr.behaviors.jj_Weapon = function(runtime)
             this.was_reload_finish = true;
             this.runtime.trigger(this.behavior.cnds.isReloadFinish, this.inst);
         }
-        
+
         if (!this.ready && !this.reload && this.enabled && (Date.now() - this.last_shoot_time >= this.interval)) {
             this.ready = true;
         }
-        
+
         if (shoot && this.ready && !this.reload && this.clip_bullets_count != 0 && this.enabled) {
             var plugin = this.type.objtype.instances[0];
             assert2(plugin.getImagePoint, "Weapon behavior can only be added to the Sprite or another plugin that has a method \"getImagePoint\"");
@@ -283,12 +280,12 @@ cr.behaviors.jj_Weapon = function(runtime)
 
 
             var inst = null;
-            
-            if(this.bullet_instance){
+
+            if (this.bullet_instance) {
                 inst = this.runtime.spawnInstance(this.bullet_instance, this.inst.layer.index, image_point, this.inst.angle);
                 this.last_shoot_bullet = inst.uid;
             }
-            
+
             this.ready = false;
             this.last_shoot_time = Date.now();
             if (this.clip_bullets_count != -1) {
@@ -298,7 +295,7 @@ cr.behaviors.jj_Weapon = function(runtime)
             this.was_shoot = true;
             this.runtime.trigger(this.behavior.cnds.wasShoot, this.inst);
 
-            if(this.bullet_instance){
+            if (this.bullet_instance) {
                 this.runtime.trigger(Object.getPrototypeOf(inst.type.plugin).cnds.OnCreated, inst);
             }
         }
@@ -312,11 +309,11 @@ cr.behaviors.jj_Weapon = function(runtime)
     cnds.isReady = function () {
         return this.ready;
     };
-    
+
     cnds.bulletsInClip = function (cmp, count) {
         return cr.do_cmp(this.clip_bullets_count, cmp, count);
     }
-    
+
     cnds.isReloadStart = function () {
         var was_reload_start = this.was_reload_start;
         this.was_reload_start = false;
@@ -329,20 +326,26 @@ cr.behaviors.jj_Weapon = function(runtime)
         return was_reload_finish;
     };
 
+    cnds.isReloadCanceled = function () {
+        var reloadCancel = this.reloadCancel;
+        this.reloadCancel = false;
+        return reloadCancel;
+    }
+
     cnds.wasShoot = function () {
         var was_shoot = this.was_shoot;
         this.was_shoot = false;
         return was_shoot;
     };
-    
+
     cnds.isDisabled = function () {
         return !this.enabled;
     };
-    
+
     cnds.isEnabled = function () {
         return this.enabled;
     };
-    
+
     //////////////////////////////////////
     // Actions
     behaviorProto.acts = {};
@@ -350,6 +353,16 @@ cr.behaviors.jj_Weapon = function(runtime)
 
     acts.makeShoot = function () {
         this.simshoot = true;
+    };
+
+    acts.simulateReload = function () {
+        this.simreload = true;
+    };
+
+    acts.cancelReload = function () {
+        if (this.was_reload_start) {
+            this.reloadCancel = true;
+        }
     };
 
     acts.addClipBullets = function (count) {
@@ -365,7 +378,7 @@ cr.behaviors.jj_Weapon = function(runtime)
             this.clip_bullets_count = 0;
         }
     };
-    
+
     acts.setClipBullets = function (count) {
         count = parseInt(count, 10);
         if (count == -1) {
@@ -375,7 +388,7 @@ cr.behaviors.jj_Weapon = function(runtime)
             this.clip_bullets_count = Math.min(count, this.clip_size);
         }
     };
-    
+
     acts.setBullets = function (count) {
         count = parseInt(count, 10);
         if (count == -1) {
@@ -405,22 +418,22 @@ cr.behaviors.jj_Weapon = function(runtime)
             }
         }
     };
-    
+
     acts.setInterval = function (ms) {
         if (ms < 0) ms = 0;
         this.interval = ms;
     };
-    
+
     acts.setReloadTime = function (ms) {
         if (ms < 0) ms = 0;
         this.reload_time = ms;
     };
-    
+
     acts.makeReady = function () {
         this.enableWeapon();
         this.ready = true;
     };
-    
+
     acts.disableWeapon = function (ms) {
         if (ms < 0 && ms != -1) return;
         this.enabled = false;
@@ -430,11 +443,11 @@ cr.behaviors.jj_Weapon = function(runtime)
             obj.enabled = true;
         }, ms);
     };
-    
+
     acts.enableWeapon = function () {
         this.enabled = true;
     };
-    
+
     acts.setShootKey = function (key) {
         this.shoot_keycode = key;
     }
@@ -447,48 +460,52 @@ cr.behaviors.jj_Weapon = function(runtime)
         this.bullet_instance = bullet;
     }
 
+    acts.setBulletByName = function (bulletName) {
+        this.bullet_instance = this.runtime.types[bulletName];
+    }
+
     //////////////////////////////////////
     // Expressions
     behaviorProto.exps = {};
     var exps = behaviorProto.exps;
 
-    exps.getClipBulletsCount = function (ret)
-    {
+    exps.getClipBulletsCount = function (ret) {
         ret.set_float(this.clip_bullets_count);
     };
-    
-    exps.getBulletsCount = function (ret)
-    {
+
+    exps.getBulletsCount = function (ret) {
         ret.set_float(this.bullets_count);
     };
-    
-    exps.getClipSize = function (ret)
-    {
+
+    exps.getClipSize = function (ret) {
         ret.set_float(this.clip_size);
     };
-    
-    exps.getInterval = function (ret)
-    {
+
+    exps.getInterval = function (ret) {
         ret.set_float(this.interval);
     };
-    
-    exps.getReloadTime = function (ret)
-    {
+
+    exps.getReloadTime = function (ret) {
         ret.set_float(this.reload_time);
     };
-    
-    exps.getReady = function (ret)
-    {
+
+    exps.getReady = function (ret) {
         ret.set_int(this.ready);
     };
-    
-    exps.getDisabled = function (ret)
-    {
+
+    exps.getDisabled = function (ret) {
         ret.set_int(!this.enabled);
     };
 
-    exps.getLastShootBullet = function(ret)
-    {
+    exps.getLastShootBullet = function (ret) {
         ret.set_int(this.last_shoot_bullet);
+    };
+
+    exps.getIsReloading = function (ret) {
+        ret.set_int(this.was_reload_start);
+    };
+
+    exps.getLastShootTime = function(ret){
+        ret.set_float((Date.now() - this.last_shoot_time) / 1000);
     };
 }());
