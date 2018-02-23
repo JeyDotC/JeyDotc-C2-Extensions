@@ -48,7 +48,12 @@ AddCondition(5, 0, "Disabled", "", "{my} disable", "True when weapon is disabled
 
 AddCondition(6, 0, "Enabled", "", "{my} enable", "True when weapon is enabled.", "isEnabled");
 
-AddCondition(7, cf_trigger, "Reload cancel", "", "{my} cancel reload", "True when weapon reload was canceled.", "isReloadCanceled");
+AddCondition(7, cf_trigger, "Reload canceled", "", "{my} cancel reload", "True when weapon reload was canceled.", "isReloadCanceled");
+
+AddCmpParam("Comparison", "Time in miliseconds to compare.");
+AddNumberParam("Last shoot time", "Last shoot time in miliseconds.");
+AddCondition(8, 0, "Last shoot time", "", "{my} Last shoot time {0} {1}", "True when has passed some time since last shoot.", "lastShootTime");
+
 
 //////////////////////////////////////////////////////////////
 // Actions

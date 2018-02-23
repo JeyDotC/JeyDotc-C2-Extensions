@@ -72,6 +72,9 @@ cr.behaviors.jj_Weapon = function (runtime) {
         // last times
         this.last_shoot_time = 0;
         this.start_reload_time = 0;
+        this.lastShootTimeSince = function(){
+            return Date.now() - this.last_shoot_time;
+        };
 
         // runtime upgrade...
         var runtimeProto = this.runtime.__proto__;
@@ -266,7 +269,7 @@ cr.behaviors.jj_Weapon = function (runtime) {
             this.runtime.trigger(this.behavior.cnds.isReloadFinish, this.inst);
         }
 
-        if (!this.ready && !this.reload && this.enabled && (Date.now() - this.last_shoot_time >= this.interval)) {
+        if (!this.ready && !this.reload && this.enabled && (this.lastShootTimeSince() >= this.interval)) {
             this.ready = true;
         }
 
@@ -312,7 +315,11 @@ cr.behaviors.jj_Weapon = function (runtime) {
 
     cnds.bulletsInClip = function (cmp, count) {
         return cr.do_cmp(this.clip_bullets_count, cmp, count);
-    }
+    };
+
+    cnds.lastShootTime = function (cmp, time) {
+        return cr.do_cmp(this.lastShootTimeSince(), cmp, time);
+    };
 
     cnds.isReloadStart = function () {
         var was_reload_start = this.was_reload_start;
@@ -506,6 +513,6 @@ cr.behaviors.jj_Weapon = function (runtime) {
     };
 
     exps.getLastShootTime = function(ret){
-        ret.set_float((Date.now() - this.last_shoot_time) / 1000);
+        ret.set_int(this.lastShootTimeSince());
     };
 }());
