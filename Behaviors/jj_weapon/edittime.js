@@ -54,6 +54,8 @@ AddCmpParam("Comparison", "Time in miliseconds to compare.");
 AddNumberParam("Last shoot time", "Last shoot time in miliseconds.");
 AddCondition(8, 0, "Last shoot time", "", "{my} Last shoot time {0} {1}", "True when has passed some time since last shoot.", "lastShootTime");
 
+AddCondition(9, 0, "Is reloading", "", "{my} is reloading", "True when the weapon is currently reloading.", "isReloading");
+
 
 //////////////////////////////////////////////////////////////
 // Actions
@@ -96,7 +98,7 @@ AddAction(11, 0, "Set reload key", "", "Reload key for {my} is {0} now.", "Set t
 AddObjectParam("Bullet", "Choose the bullet object for weapon");
 AddAction(12, 0, "Set bullet instance", "", "Bullet of {my} now is {0}.", "Set the weapon bullet type.", "setBullet");
 
-AddAction(13, 0, "Reload", "", "{my} reload now.", "Start reload.", "simulateReload");
+AddAction(16, 0, "Reload", "", "{my} reload now.", "Start reload.", "simulateReload");
 
 AddAction(14, 0, "Cancel reload", "", "{my} cancel reload.", "Cancel the current reload.", "cancelReload");
 

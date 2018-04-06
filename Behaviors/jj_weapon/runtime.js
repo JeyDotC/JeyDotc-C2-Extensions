@@ -244,6 +244,7 @@ cr.behaviors.jj_Weapon = function (runtime) {
         if (this.reloadCancel) {
             this.reload = false;
             this.runtime.trigger(this.behavior.cnds.isReloadCanceled, this.inst);
+            this.reloadCancel = false;
         }
 
         if (this.reload && Date.now() - this.start_reload_time >= this.reload_time && this.clip_size != 0 && this.clip_bullets_count != -1 && this.bullets_count != 0) {
@@ -325,6 +326,10 @@ cr.behaviors.jj_Weapon = function (runtime) {
         var was_reload_start = this.was_reload_start;
         this.was_reload_start = false;
         return was_reload_start;
+    }; 
+    
+    cnds.isReloading = function () {
+        return this.reload;
     };
 
     cnds.isReloadFinish = function () {
@@ -367,7 +372,7 @@ cr.behaviors.jj_Weapon = function (runtime) {
     };
 
     acts.cancelReload = function () {
-        if (this.was_reload_start) {
+        if (this.reload) {
             this.reloadCancel = true;
         }
     };
