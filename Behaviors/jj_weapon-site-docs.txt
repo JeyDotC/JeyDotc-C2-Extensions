@@ -1,0 +1,89 @@
+[h2]ACEs[/h2]
+[tabgroup][tab title="Properties"][dl sans-serif]
+[dt]Clip size[/dt][dd]Count of bullets in each clip (-1 = infinity).[/dd]
+[dt]Bullets in clip[/dt][dd]Bullets in clip at start (-1 = infinity)[/dd]
+[dt]Bullets in stock[/dt][dd]Count of bullets for current weapon (-1 = infinity).[/dd]
+[dt]Stock size[/dt][dd]Volume of current weapon for bullets. Max bullets count. (-1 = infinity).[/dd]
+[dt]Shoot interval[/dt][dd]Interval in milliseconds between shoots.[/dd]
+[dt]Reload time[/dt][dd]Reload time in milliseconds.[/dd]
+[dt]Auto-reload[/dt][dd]When clip is empty, weapon start reload automatically.[/dd]
+[dt]User control[/dt][dd]Type of weapon firing: 
+None: weapon not controlling by player.
+Single: for each shoot user must make click (down and up key).
+Burst: down shoot-key for constantly shoot and up for enought.[/dd]
+[dt]Enabled[/dt][dd]If disabled, weapon can not make shoots.[/dd]
+[dt]Shoot key[/dt][dd]Name or code of key for shoot.[/dd]
+[dt]Reload key[/dt][dd]Name or code of key for reload.[/dd]
+[dt]Weapon image-point[/dt][dd]Set point for the weapon from which bullets will fly.[/dd][/dl][/tab]
+[tab title="Actions"][dl sans-serif]
+[dt]Make a shoot[/dt][dd]Make a one shoot.[/dd]
+[dt]Add bullets to clip[/dt][dd]Add bullets to a clip for object. You can use negative values (e.g.: -5)
+[b]Params[/b]
+Count: The number of bullets to add to the clip.[/dd]
+[dt]Set bullets in the clip[/dt][dd]Set bullets count in the clip of object. (-1 = infinity)
+[b]Params[/b]
+Count: Set count of bullets in the clip.[/dd]
+[dt]Set weapon bullets count[/dt][dd]Set bullets count for the current weapon. From 0 to -1 (=infinity)
+[b]Params[/b]
+Count: Set count of bullets in the stock.[/dd]
+[dt]Set weapon size of stock[/dt][dd]Set size of stock for the current weapon. (-1 = infinity)
+[b]Params[/b]
+size: Set size of stock.[/dd]
+[dt]Set size of the clip[/dt][dd]Set maximum of bullets count in a clip. (-1 = infinity)
+[b]Params[/b]
+Count: Set maximum of bullets count in a clip.[/dd]
+[dt]Set interval[/dt][dd]Set interval between shoots for current weapon (ms).
+[b]Params[/b]
+Interval: Set interval between shots for current weapon (milliseconds).[/dd]
+[dt]Set reload time[/dt][dd]Set interval between shoots for current weapon (ms).
+[b]Params[/b]
+ReloadTime: Set interval for reload current weapon (milliseconds).[/dd]
+[dt]Set ready to shoot[/dt][dd]Set the weapon to ready for a shoot.[/dd]
+[dt]Disable weapon during...[/dt][dd]Set the disabled status for weapon during some time. (-1 = not limited in time)
+[b]Params[/b]
+During: Disable weapon during in milliseconds. -1 means "not limited by time".[/dd]
+[dt]Enable weapon[/dt][dd]Set the weapon enabled.[/dd]
+[dt]Set shoot key[/dt][dd]Set the shoot key for weapon.
+[b]Params[/b]
+Shoot key: Choose the key for shoot from weapon[/dd]
+[dt]Set reload key[/dt][dd]Set the reload key for weapon.
+[b]Params[/b]
+Reload key: Choose the key for weapon reload[/dd]
+[dt]Set bullet instance[/dt][dd]Set the weapon bullet type.
+[b]Params[/b]
+Bullet: Choose the bullet object for weapon[/dd]
+[dt]Reload[/dt][dd]Start reload.[/dd]
+[dt]Cancel reload[/dt][dd]Cancel the current reload.[/dd]
+[dt]Set bullet instance by name[/dt][dd]Set the weapon bullet type by name.
+[b]Params[/b]
+Instance type name: Name of the bullet instance type.[/dd][/dl][/tab]
+[tab title="Conditions"][dl sans-serif]
+[dt]Is ready[/dt][dd]True when the object is make pause and ready to shoot now.[/dd]
+[dt]Bullets in clip[/dt][dd]True when the object clip have some bullets.
+[b]Params[/b]
+Comparison: Choose bullets count to compare.
+Bullets count: The bullets in clip.[/dd]
+[dt]Reload start[/dt][dd]True when weapon is reload start.[/dd]
+[dt]Reload finish[/dt][dd]True when weapon is reload finish.[/dd]
+[dt]Shoot[/dt][dd]True when the object is make shoot.[/dd]
+[dt]Disabled[/dt][dd]True when weapon is disabled.[/dd]
+[dt]Enabled[/dt][dd]True when weapon is enabled.[/dd]
+[dt]Reload canceled[/dt][dd]True when weapon reload was canceled.[/dd]
+[dt]Last shoot time[/dt][dd]True when has passed some time since last shoot.
+[b]Params[/b]
+Comparison: Time in miliseconds to compare.
+Last shoot time: Last shoot time in miliseconds.[/dd]
+[dt]Is reloading[/dt][dd]True when the weapon is currently reloading.[/dd][/dl][/tab]
+[tab title="Expressions"][dl]
+[dt]getClipBulletsCount[/dt][dd]Get bullets count in the clip[/dd]
+[dt]getBulletsCount[/dt][dd]Get bullets count for weapon[/dd]
+[dt]getClipSize[/dt][dd]Get clip size[/dd]
+[dt]getInterval[/dt][dd]Get shots interval[/dd]
+[dt]getReloadTime[/dt][dd]Get reload time[/dd]
+[dt]getReady[/dt][dd]Get ready status[/dd]
+[dt]getDisabled[/dt][dd]Get disabled status[/dd]
+[dt]getLastShootBullet[/dt][dd]Get last shot bullet UID[/dd]
+[dt]getIsReloading[/dt][dd]Get is reloading[/dd]
+[dt]getLastShootTime[/dt][dd]Get last shoot time[/dd]
+[/dl]
+[/tab][/tabgroup]
