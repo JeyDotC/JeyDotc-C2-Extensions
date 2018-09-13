@@ -373,12 +373,12 @@ cr.plugins_.circular_list = function(runtime)
 
     Exps.prototype.Front = function (ret)
     {
-        ret.set_int(this.list[0]);
+        ret.set_any(this.list[0]);
     };
 
     Exps.prototype.Back = function (ret)
     {
-        ret.set_int(this.list[this.list.length - 1]);
+        ret.set_any(this.list[this.list.length - 1]);
     };
     
     // ... other expressions here ...

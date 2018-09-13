@@ -150,7 +150,7 @@ ACESDone();
 
 var property_list = [
     new cr.Property(ept_integer, "Width",            10,         "Initial number of elements on the list."),
-    new cr.Property(ept_combo,   "Distinct Values",  "No",       "Allow unique values only (repeated values will be ignored).", "Yes|No"),
+    new cr.Property(ept_combo,   "Distinct Values",  "No",       "Allow unique values only (repeated values will be ignored).", "No|Yes"),
 ];
     
 // Called by IDE when a new object type is to be created
