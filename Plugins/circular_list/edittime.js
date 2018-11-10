@@ -4,7 +4,7 @@
         "name":         "Circular List",                // as appears in 'insert object' dialog, can be changed as long as "id" stays the same
         "id":           "circular_list",                // this is used to identify this plugin and is saved to the project; never change it
         "version":      "1.0",                  // (float in x.y format) Plugin version - C2 shows compatibility warnings based on this
-        "description":  "Implentation of a circular list data structure",
+        "description":  "Implementation of a circular list data structure",
         "author":       "JeyDotC",
         "help url":     " ",
         "category":     "Data & Storage",               // Prefer to re-use existing categories, but you can set anything here
