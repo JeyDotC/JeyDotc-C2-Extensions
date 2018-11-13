@@ -1,0 +1,8 @@
+## Construct 2 ##
+
+#Construct 2 User Interface
+*.uistate.xml
+ 
+#Temporary files
+*.capx.backup*
+*.capx.autosave*
