@@ -6,3 +6,6 @@
 #Temporary files
 *.capx.backup*
 *.capx.autosave*
+
+# Visual Studio IDE
+.vs/
