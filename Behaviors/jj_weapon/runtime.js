@@ -12,6 +12,7 @@ cr.behaviors.jj_Weapon = function (runtime) {
 
 (function () {
     var behaviorProto = cr.behaviors.jj_Weapon.prototype;
+    var typeMap = {};
 
     /////////////////////////////////////
     // Behavior type class
@@ -24,6 +25,21 @@ cr.behaviors.jj_Weapon = function (runtime) {
     var behtypeProto = behaviorProto.Type.prototype;
 
     behtypeProto.onCreate = function () {
+        // Due to the naming inconsistency of C2 when exporting the object types, we have to create a map of the object
+        // Types vs their user provided names.
+        const types = this.runtime.types;
+        typeMap = Object.keys(types)
+            .filter(k => {
+                const type = types[k];
+                return (type.plugin instanceof cr.plugins_.Sprite) && type.all_frames !== undefined && type.all_frames.length > 0
+            })
+            .reduce((total, key) => {
+                const type = types[key];
+                const firstFrame = type.all_frames[0].texture_file;
+                const typeName = firstFrame.replace('images/', '').split('-')[0].toLowerCase();
+                total[typeName] = key;
+                return total;
+            }, {});
     };
 
     /////////////////////////////////////
@@ -72,7 +88,7 @@ cr.behaviors.jj_Weapon = function (runtime) {
         // last times
         this.last_shoot_time = 0;
         this.start_reload_time = 0;
-        this.lastShootTimeSince = function(){
+        this.lastShootTimeSince = function () {
             return Date.now() - this.last_shoot_time;
         };
 
@@ -326,8 +342,8 @@ cr.behaviors.jj_Weapon = function (runtime) {
         var was_reload_start = this.was_reload_start;
         this.was_reload_start = false;
         return was_reload_start;
-    }; 
-    
+    };
+
     cnds.isReloading = function () {
         return this.reload;
     };
@@ -473,7 +489,15 @@ cr.behaviors.jj_Weapon = function (runtime) {
     }
 
     acts.setBulletByName = function (bulletName) {
-        this.bullet_instance = this.runtime.types[bulletName];
+        this.bullet_instance = undefined;
+
+        const typeName = typeMap[(bulletName || '').toLowerCase()];
+        if (typeName === undefined) {
+            console.log(`WARNING: Couldn't find the object type with name '${bulletName}'. Make sure to name the spritesheet file as the object type.`);
+            return;
+        }
+
+        this.bullet_instance = this.runtime.types[typeName];
     }
 
     //////////////////////////////////////
@@ -517,7 +541,7 @@ cr.behaviors.jj_Weapon = function (runtime) {
         ret.set_int(this.was_reload_start);
     };
 
-    exps.getLastShootTime = function(ret){
+    exps.getLastShootTime = function (ret) {
         ret.set_int(this.lastShootTimeSince());
     };
 }());

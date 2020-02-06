@@ -9,3 +9,5 @@
 
 # Visual Studio IDE
 .vs/
+
+.idea/
