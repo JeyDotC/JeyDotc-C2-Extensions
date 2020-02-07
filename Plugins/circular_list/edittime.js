@@ -59,11 +59,11 @@ AddCondition(0, cf_none, "Is empty", "General", "Is empty", "Check if the list i
 
 AddCmpParam("Comaprison", "How to compare the count to");
 AddNumberParam("Number", "Number to compare the count to");
-AddCondition(1, cf_none, "Compare count", "General", "Compare count", "Compare a number with the count of the list", "CompareCount");
+AddCondition(1, cf_none, "Compare count", "General", "Compare <b>count</b> {0} <i>{1}</i>", "Compare a number with the count of the list", "CompareCount");
 
 AddCmpParam("Comaprison", "How to compare the current element to");
 AddAnyTypeParam("Element", "Value to compare the current to");
-AddCondition(2, cf_none, "Compare current", "Cursor", "Compare current", "Compare a number with the current of the list", "Comparecurrent");
+AddCondition(2, cf_none, "Compare current", "Cursor", "Compare <b>current value</b> {0} <i>{1}</i>", "Compare a number with the current of the list", "Comparecurrent");
 
 ////////////////////////////////////////
 // Actions
@@ -113,6 +113,7 @@ AddComboParamOption("Allow repeated values");
 AddComboParam("Distinct", "Whether to allow repeated values or not.");
 AddAction(10, af_none, "Distinct", "General", "{0}", "Allow/disallow repeated values in the list.", "SetDistinct");
 
+AddAction(11, af_none, "Remove Current", "Manipulation", "Remove Current Element", "Removes the element at the current index", "RemoveCurrent");
 ////////////////////////////////////////
 // Expressions
 

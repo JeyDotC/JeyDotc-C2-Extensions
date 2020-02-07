@@ -280,8 +280,7 @@ cr.plugins_.circular_list = function(runtime)
     Acts.prototype.Clear = function ()
     {
         this.current = 0;
-        for (var index = 0; index < this.list.length; index++)
-            this.list[index] = 0;
+        this.list = [];
     };
     
     Acts.prototype.SetDistinct = function (allowRepeated)
@@ -302,6 +301,19 @@ cr.plugins_.circular_list = function(runtime)
             }else
             {
                 this.current = 0;
+            }
+        }
+    };
+
+    Acts.prototype.RemoveCurrent = function ()
+    {
+        if (this.list.length > 0) {
+            this.list = this.list.splice(this.current, 1);
+            if (this.current >= this.list.length){
+                this.current = this.list.length - 1;
+                if (this.current < 0) {
+                    this.current = 0;
+                }
             }
         }
     };
