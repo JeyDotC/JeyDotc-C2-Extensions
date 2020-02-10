@@ -63,7 +63,10 @@ AddCondition(1, cf_none, "Compare count", "General", "Compare <b>count</b> {0} <
 
 AddCmpParam("Comaprison", "How to compare the current element to");
 AddAnyTypeParam("Element", "Value to compare the current to");
-AddCondition(2, cf_none, "Compare current", "Cursor", "Compare <b>current value</b> {0} <i>{1}</i>", "Compare a number with the current of the list", "Comparecurrent");
+AddCondition(2, cf_none, "Compare current", "Cursor", "Compare <b>current value</b> {0} <i>{1}</i>", "Compare a value with the current of the list", "Comparecurrent");
+
+AddAnyTypeParam("Element", "Value to find out");
+AddCondition(3, cf_none, "Contains", "General", "Check if <i>{0}</i> is in the list", "Checks if an element is in the list", "Contains");
 
 ////////////////////////////////////////
 // Actions

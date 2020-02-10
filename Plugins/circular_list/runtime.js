@@ -167,6 +167,10 @@ cr.plugins_.circular_list = function(runtime)
         return cr.do_cmp(this.list[current], cmp, val);
     };
 
+    Cnds.prototype.Contains = function(val){
+        return contains(this.list, val);
+    };
+
     // ... other conditions here ...
     
     pluginProto.cnds = new Cnds();
