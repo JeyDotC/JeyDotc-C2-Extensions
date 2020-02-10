@@ -129,7 +129,7 @@ cr.plugins_.circular_list = function(runtime)
             "properties": [
                 {"name": "Current", "value": this.current},
                 {"name": "Distinct", "value": this.distinct},
-                {"name": "Data", "value": this.list.join(',')}
+                {"name": "Data", "value": JSON.stringify(this.list)}
             ]
         });
     };
@@ -162,9 +162,9 @@ cr.plugins_.circular_list = function(runtime)
         return cr.do_cmp(this.list.length, cmp, val);
     };
 
-    Cnds.prototype.Comparecurrent = function (cmp, val)
+    Cnds.prototype.CompareCurrent = function (cmp, val)
     {
-        return cr.do_cmp(this.list[current], cmp, val);
+        return cr.do_cmp(this.list[this.current], cmp, val);
     };
 
     Cnds.prototype.Contains = function(val){
